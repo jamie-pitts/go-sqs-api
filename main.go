@@ -36,7 +36,8 @@ var qUrl = "https://sqs.eu-west-1.amazonaws.com/INSERT YOUR QUEUE URL HERE"
 func messageScan() {
 	fmt.Println("Scanning for messages....")
 	for {
-		result, err := sqsClient.ReceiveMessage(&sqs.ReceiveMessageInput{QueueUrl: &qUrl})
+		waitTimeSecs := int64(5)
+		result, err := sqsClient.ReceiveMessage(&sqs.ReceiveMessageInput{QueueUrl: &qUrl, WaitTimeSeconds: &waitTimeSecs})
 		if err == nil && len(result.Messages) > 0 {
 			fmt.Println("Received message")
 			messageStatus.Messages = append(messageStatus.Messages, &MessageData{result.Messages[0].MessageId, result.Messages[0].Body})
